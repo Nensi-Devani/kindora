@@ -26,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
+    super.dispose();
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.manual,
       overlays: SystemUiOverlay.values,
@@ -38,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
       backgroundColor: AppColors.accentBackground,
       body: Center(
         child: Image.asset(
-          '../assets/images/logo.png',
+          'assets/images/logo.png',
           height: 150,
           width: 150,
           fit: BoxFit.contain,

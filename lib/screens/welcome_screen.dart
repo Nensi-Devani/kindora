@@ -13,10 +13,10 @@ class WelcomeScreen extends StatelessWidget {
           children: [
             // Top image
             Padding(
-              padding: const EdgeInsets.only(top: 150.0),
+              padding: const EdgeInsets.only(top: 70.0),
               child: Image.asset(
-                '../assets/images/welcome_img.png',
-                height: 230,
+                'assets/images/welcome_img.png',
+                height: 210,
                 fit: BoxFit.contain,
               ),
             ),
@@ -25,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 90),
+                const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -37,8 +37,8 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ),
                     Image.asset(
-                      '../assets/images/logo.png',
-                      height: 28,
+                      'assets/images/logo.png',
+                      height: 30,
                       fit: BoxFit.contain,
                     ),
                     const Text(
@@ -58,7 +58,7 @@ class WelcomeScreen extends StatelessWidget {
                   child: Text(
                     "Your kindness makes difference.\nJoin changemakers spreading kindness and uplifting lives.",
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 16, color: Colors.black87),
+                    style: const TextStyle(fontSize: 14, color: Colors.black87),
                   ),
                 ),
               ],
