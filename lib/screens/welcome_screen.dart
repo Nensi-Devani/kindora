@@ -10,7 +10,6 @@ class WelcomeScreen extends StatelessWidget {
       backgroundColor: AppColors.lightBackground,
       body: SafeArea(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             // Top image
             Padding(
@@ -62,61 +61,8 @@ class WelcomeScreen extends StatelessWidget {
                     style: const TextStyle(fontSize: 16, color: Colors.black87),
                   ),
                 ),
-
-                //   ],
-                // ),
-
-                // Buttons section
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: Container(
-                //         decoration: BoxDecoration(
-                //           color: AppColors.secondaryBackground,
-                //           borderRadius: const BorderRadius.only(
-                //             topLeft: Radius.circular(20),
-                //           ),
-                //         ),
-                //         child: TextButton(
-                //           onPressed: () {
-                //             // Navigate to signup
-                //           },
-                //           child: const Text(
-                //             "Sign up",
-                //             style: TextStyle(
-                //               color: Colors.black87,
-                //               fontSize: 16,
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: Container(
-                //         decoration: BoxDecoration(
-                //           color: AppColors.primaryButton,
-                //           borderRadius: const BorderRadius.only(
-                //             topRight: Radius.circular(20),
-                //           ),
-                //         ),
-                //         child: TextButton(
-                //           onPressed: () {
-                //             // Navigate to signin
-                //           },
-                //           child: const Text(
-                //             "Sign in",
-                //             style: TextStyle(color: Colors.white, fontSize: 16),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-
-                // new column
               ],
             ),
-            // new column
           ],
         ),
       ),
