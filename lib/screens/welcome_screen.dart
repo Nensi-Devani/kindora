@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kindora/screens/signin_screen.dart';
+import 'package:kindora/screens/signup_screen.dart';
 import '../app_theme/app_colors.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -80,6 +82,10 @@ class WelcomeScreen extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   // Navigate to signup
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (e) => const SignUpScreen()),
+                  );
                 },
                 child: const Text(
                   "Sign up",
@@ -100,6 +106,10 @@ class WelcomeScreen extends StatelessWidget {
               child: TextButton(
                 onPressed: () {
                   // Navigate to signin
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (e) => const SignInScreen()),
+                  );
                 },
                 child: const Text(
                   "Sign in",
