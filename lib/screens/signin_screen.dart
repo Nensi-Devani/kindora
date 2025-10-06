@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kindora/screens/home_screen.dart';
+import 'forgot_password_screen.dart';
 import 'signup_screen.dart';
 import '../widgets/custom_scaffold.dart';
 import '../app_theme/app_colors.dart';
@@ -113,6 +115,15 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                           GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ForgotPasswordScreen(),
+                                ),
+                              );
+                            },
                             child: Text(
                               'Forget password?',
                               style: TextStyle(
@@ -136,7 +147,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 rememberPassword) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Redirecting to Sign Up...'),
+                                  content: Text('Redirecting to Home...'),
                                 ),
                               );
 
@@ -145,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const SignUpScreen(),
+                                    builder: (context) => const HomeScreen(),
                                   ),
                                 );
                               });
