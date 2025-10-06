@@ -162,7 +162,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 agreePersonalData) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content: Text('Redirecting to Sign In...'),
+                                  content: Text('Successfully signed up...'),
                                 ),
                               );
 
