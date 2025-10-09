@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
               Icon(Icons.close, color: Colors.black),
               Padding(
                 padding: EdgeInsets.only(right: 10),
-                child: Text("Cancel", style: TextStyle(color: Colors.black)),
+                child: Text("", style: TextStyle(color: Colors.black)),
               ),
             ],
           ),
