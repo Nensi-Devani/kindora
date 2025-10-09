@@ -299,7 +299,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           // 2. Add Button (Selected State)
           _navItem(
             Icons.add,
-            true, // Add is selected/active on this screen
+            false, // Add is selected/active on this screen
             AppColors.primaryButton,
             () {
               Navigator.pushReplacement(
