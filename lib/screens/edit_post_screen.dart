@@ -63,14 +63,17 @@ class _EditPostScreenState extends State<EditPostScreen> {
   }
 
   void _handlePost() {
-    debugPrint('*** Post button clicked! Saving changes: ***');
-    debugPrint('Description: ${_descriptionController.text}');
-    debugPrint('Amount: ${_amountController.text}');
-    debugPrint('Images remaining: ${_images.length}');
+  debugPrint('Description: ${_descriptionController.text}');
+  debugPrint('Amount: ${_amountController.text}');
+  debugPrint('Images remaining: ${_images.length}');
 
-    // Optionally navigate back after posting
-    Navigator.pop(context);
-  }
+  // Navigate to HomeScreen
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => HomeScreen()),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -349,16 +352,17 @@ class _EditPostScreenState extends State<EditPostScreen> {
     );
   }
 
-  Widget _buildPostButton() {
-    return SizedBox(
-      width: double.infinity,
+ Widget _buildPostButton() {
+  return Center(
+    child: SizedBox(
+      width: 250,
       height: 60,
       child: ElevatedButton(
-        onPressed: _handlePost, // CLICK EVENT: Post the updates
+        onPressed: _handlePost,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryButton, // B55266
+          backgroundColor: AppColors.primaryButton,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(30),
           ),
           elevation: 5,
         ),
@@ -371,8 +375,10 @@ class _EditPostScreenState extends State<EditPostScreen> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   // --- Bottom Navigation Bar with Click Events ---
 
@@ -382,8 +388,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground, // E7AC98
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: Radius.circular(0),
+          topRight: Radius.circular(0),
         ),
       ),
       child: Row(
@@ -401,7 +407,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
           // 2. Add Button (Selected State in the image)
           _navItem(
             Icons.add,
-            true, // Add is selected/active on this screen
+            false, // Add is selected/active on this screen
             AppColors.primaryButton,
             () {
               // CLICK EVENT: Go to Add Post Screen

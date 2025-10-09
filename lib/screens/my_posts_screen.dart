@@ -69,7 +69,7 @@ class MyPostsScreen extends StatelessWidget {
               children: [
                 Icon(Icons.close, color: Colors.black, size: 20),
                 SizedBox(width: 5),
-                Text("Cancel", style: TextStyle(color: Colors.black)),
+                Text("", style: TextStyle(color: Colors.black)),
               ],
             ),
           ),
@@ -85,8 +85,8 @@ class MyPostsScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground, // E7AC98
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: Radius.circular(0),
+          topRight: Radius.circular(0),
         ),
       ),
       child: Row(
@@ -123,7 +123,7 @@ class MyPostsScreen extends StatelessWidget {
           // 3. Profile Button (Selected State in MyPost.png)
           _navItem(
             Icons.person,
-            true, // Profile is selected
+            false, // Profile is selected
             AppColors.primaryButton,
             () {
               // CLICK EVENT: Navigate to Profile Screen
@@ -219,7 +219,7 @@ class MyPostCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "Kind Donor with Soft Heart",
+                  "Kind Donor",
                   style: TextStyle(color: Colors.grey, fontSize: 13),
                 ),
                 SizedBox(width: 4),
@@ -260,20 +260,20 @@ class MyPostCard extends StatelessWidget {
       children: [
         const Text(
           "Amount Required: ",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
         ),
         Text(
           "50,000",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color:  AppColors.primaryButton,fontSize: 12),
         ), // DF8B92
         const Spacer(),
         const Text(
           "Amount Received: ",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
         ),
         Text(
           "15,000",
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryButton,fontSize: 12),
         ), // DF8B92
       ],
     );
@@ -330,7 +330,7 @@ class MyPostCard extends StatelessWidget {
         // 3. Donate Button (Navigation)
         _feedButton(
           icon: Icons.favorite,
-          label: "Donate Now",
+          label: "Donate",
           onPressed: () {
             // CLICK EVENT: Navigate to Payment Screen
             Navigator.push(
