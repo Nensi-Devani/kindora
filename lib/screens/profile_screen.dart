@@ -159,7 +159,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       alignment: Alignment.topLeft,
                       child: IconButton(
                         icon: const Icon(Icons.arrow_back, color: Colors.black),
-                        onPressed: () => debugPrint('Back button pressed'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                       ),
                     ),
                   ),
@@ -211,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditProfileScreen(),
+                                  builder: (context) => const EditProfileScreen(),
                                 ),
                               );
                             },
@@ -223,7 +225,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ChangePasswordScreen(),
+                                  builder: (context) => const ChangePasswordScreen(),
                                 ),
                               );
                             },
@@ -254,7 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MyPostsScreen(),
+                                builder: (context) => const MyPostsScreen(),
                               ),
                             );
                           },
@@ -266,7 +268,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MyDonationScreen(),
+                                builder: (context) => const MyDonationScreen(),
                               ),
                             );
                           },
@@ -278,7 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ReceivedDonationScreen(),
+                                builder: (context) => const ReceivedDonationScreen(),
                               ),
                             );
                           },
@@ -297,7 +299,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-
       bottomNavigationBar: _buildBottomNavBar(context),
     );
   }
@@ -329,7 +330,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           }),
           _navItem(Icons.person, true, AppColors.primaryButton, () {
-            // debugPrint('Already on Profile Screen');
+            // Already on profile screen
           }),
         ],
       ),
