@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kindora/screens/home_screen.dart';
+import 'package:kindora/screens/new_post_screen.dart';
 import 'package:kindora/screens/profile_screen.dart';
 import '../app_theme/app_colors.dart';
 
@@ -204,7 +206,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
       // --- Bottom Navigation Bar ---
-      bottomNavigationBar: _buildBottomNavBar(),
+      bottomNavigationBar: _buildBottomNavBar(context),
     );
   }
 
@@ -267,82 +269,86 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   // Helper method for the bottom navigation bar
-  Widget _buildBottomNavBar() {
-    const double navBarHeight = 70;
-
+  Widget _buildBottomNavBar(BuildContext context) {
     return Container(
-      height: navBarHeight,
+      height: 80,
       decoration: BoxDecoration(
-        color: AppColors.secondaryBackground, // Color from image
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(0, -3),
-          ),
-        ],
+        color: AppColors.secondaryBackground, // E7AC98
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          // 1. Home Item
-          _navBarItem(icon: Icons.home, isSelected: false, onTap: () => null),
-
-          // 2. Add Item (Circular/Floating style)
-          Expanded(
-            child: GestureDetector(
-              onTap: () => print('Nav: Add Tapped'),
-              child: Center(
-                child: Container(
-                  width: navBarHeight * 0.7,
-                  height: navBarHeight * 0.7,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primaryButton, // Color from image
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.add,
-                    color: AppColors.lightBackground,
-                    size: 30,
-                  ),
-                ),
-              ),
-            ),
+          // 1. Home Button (Navigation)
+          _navItem(
+            Icons.home,
+            false, // Not selected
+            AppColors.primaryButton,
+            () {
+              // CLICK EVENT: Go to Home Screen
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            },
           ),
 
-          // 3. Profile Item (Selected/Active style)
-          _navBarItem(
-            icon: Icons.person,
-            isSelected: true,
-            onTap: () => print('Nav: Profile Tapped'),
+          // 2. Add Button (Selected State)
+          _navItem(
+            Icons.add,
+            true, // Add is selected/active on this screen
+            AppColors.primaryButton,
+            () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => NewPostScreen()),
+              );
+            },
+          ),
+
+          // 3. Profile Button (Navigation)
+          _navItem(
+            Icons.person,
+            false, // Not selected
+            AppColors.primaryButton,
+            () {
+              // CLICK EVENT: Go to Profile Screen
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            },
           ),
         ],
       ),
     );
   }
 
-  // Helper method for a single navigation item (Home and Profile)
-  Widget _navBarItem({
-    required IconData icon,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    Color itemColor = isSelected
-        ? AppColors.lightBackground
-        : AppColors.primaryButton.withOpacity(0.6);
-    Color backgroundColor = isSelected
-        ? AppColors.primaryButton
-        : AppColors
-              .secondaryBackground; // Primary for active, secondary for others
-
+  // Helper function for Nav Items
+  Widget _navItem(
+    IconData icon,
+    bool isSelected,
+    Color activeColor,
+    VoidCallback onPressed,
+  ) {
     return Expanded(
       child: GestureDetector(
-        onTap: onTap,
+        onTap: onPressed, // The click event handler
         child: Container(
-          color: backgroundColor,
-          height: double.infinity,
-          child: Icon(icon, color: itemColor, size: 30),
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+          decoration: isSelected
+              ? BoxDecoration(
+                  color: activeColor, // B55266
+                  borderRadius: BorderRadius.circular(15),
+                )
+              : null,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Icon(icon, color: Colors.white, size: 30)],
+          ),
         ),
       ),
     );
