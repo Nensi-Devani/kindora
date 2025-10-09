@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kindora/screens/edit_profile_screen.dart';
-import 'package:kindora/screens/home_screen.dart';
-import 'package:kindora/screens/payment_done_screen.dart';
 import 'package:kindora/screens/splash_screen.dart';
 
 void main() {
@@ -20,7 +17,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: SplashScreen(),
-      // home: PaymentDoneScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

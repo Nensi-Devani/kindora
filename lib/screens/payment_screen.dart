@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kindora/app_theme/app_colors.dart';
+import 'package:kindora/screens/payment_done_screen.dart';
 import 'home_screen.dart';
 import 'new_post_screen.dart';
 import 'profile_screen.dart';
@@ -59,6 +60,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
       );
       print('Payment confirmed for Rs. $_total');
+
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const PaymentDoneScreen()),
+        );
+      });
     }
   }
 

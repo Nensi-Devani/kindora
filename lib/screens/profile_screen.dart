@@ -213,7 +213,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const EditProfileScreen(),
+                                  builder: (context) =>
+                                      const EditProfileScreen(),
                                 ),
                               );
                             },
@@ -225,7 +226,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const ChangePasswordScreen(),
+                                  builder: (context) =>
+                                      const ChangePasswordScreen(),
                                 ),
                               );
                             },
@@ -263,7 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         _buildListTile(
                           icon: Icons.wallet_giftcard_outlined,
-                          title: 'My Donation',
+                          title: 'History',
                           onTap: () {
                             Navigator.push(
                               context,
@@ -273,18 +275,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                           },
                         ),
-                        _buildListTile(
-                          icon: Icons.inbox_outlined,
-                          title: 'Received Donation',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ReceivedDonationScreen(),
-                              ),
-                            );
-                          },
-                        ),
+                        // _buildListTile(
+                        //   icon: Icons.inbox_outlined,
+                        //   title: 'Received Donation',
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) =>
+                        //             const ReceivedDonationScreen(),
+                        //       ),
+                        //     );
+                        //   },
+                        // ),
                         _buildListTile(
                           icon: Icons.logout,
                           title: 'Sign Out',
