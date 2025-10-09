@@ -58,7 +58,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile saved successfully!')),
       );
-      print('Profile Saved! Data: Name: ${_nameController.text}');
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfileScreen()),
+        );
+      });
     }
   }
 
@@ -172,14 +177,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     SizedBox(
                       width: 250,
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ProfileScreen(),
-                            ),
-                          );
-                        },
+                        onPressed: _saveProfile,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryButton,
                           minimumSize: const Size(250, 50),
