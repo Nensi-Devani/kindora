@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../app_theme/app_colors.dart';
+import 'payment_screen.dart';
 import 'new_post_screen.dart';
 import 'profile_screen.dart';
 
@@ -15,19 +15,6 @@ class AddPostScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('New Post')),
       body: const Center(
         child: Text('Add Post Screen', style: TextStyle(fontSize: 20)),
-      ),
-    );
-  }
-}
-
-class PaymentScreen extends StatelessWidget {
-  const PaymentScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Make a Donation')),
-      body: const Center(
-        child: Text('Payment Screen', style: TextStyle(fontSize: 20)),
       ),
     );
   }
@@ -256,7 +243,7 @@ class DonationFeedCard extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.primaryButton,
-            fontSize: 12
+            fontSize: 12,
           ),
         ), // DF8B92
         const Spacer(),
@@ -269,7 +256,7 @@ class DonationFeedCard extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.primaryButton,
-            fontSize: 12
+            fontSize: 12,
           ),
         ), // DF8B92
       ],
@@ -318,13 +305,12 @@ class DonationFeedCard extends StatelessWidget {
           backgroundColor: AppColors.accentBackground, // ECCABF
         ),
         // 2. Comment Button
-       _feedButton(
-            icon: Icons.comment_outlined,
-            label: "Comment",
-            onPressed: () => debugPrint('Comment Clicked!'),
-            backgroundColor: AppColors.accentBackground,
+        _feedButton(
+          icon: Icons.comment_outlined,
+          label: "Comment",
+          onPressed: () => debugPrint('Comment Clicked!'),
+          backgroundColor: AppColors.accentBackground,
         ),
-
 
         // 3. Donate Button (Navigation)
         _feedButton(
