@@ -23,38 +23,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _showLogoutConfirmation() async {
     final bool confirm =
         await showDialog<bool>(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: AppColors.lightBackground,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: AppColors.lightBackground,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              title: const Text('Confirm Signout'),
+              content: const Text(
+                'Are you sure you want to sign out of your account?',
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: AppColors.primaryButton),
                   ),
-                  title: const Text('Confirm Signout'),
-                  content: const Text(
-                    'Are you sure you want to sign out of your account?',
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text(
+                    'Sign Out',
+                    style: TextStyle(color: Colors.black),
                   ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(false),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(color: AppColors.primaryButton),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      child: const Text(
-                        'Sign Out',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ) ??
-            false;
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
 
     if (confirm) {
       Navigator.pushAndRemoveUntil(
@@ -179,9 +179,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 120,
                             errorBuilder: (context, error, stackTrace) =>
                                 Image.network(
-                              'https://placehold.co/120x120/E7AC98/B55266?text=Pets',
-                              fit: BoxFit.cover,
-                            ),
+                                  'https://placehold.co/120x120/E7AC98/B55266?text=Pets',
+                                  fit: BoxFit.cover,
+                                ),
                           ),
                         ),
                       ),
@@ -244,10 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 20.0,
-                      bottom: 100.0,
-                    ),
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 100.0),
                     child: Column(
                       children: [
                         _buildListTile(
@@ -320,36 +317,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _navItem(
-            Icons.home,
-            false,
-            AppColors.primaryButton,
-            () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-              );
-            },
-          ),
-          _navItem(
-            Icons.add,
-            false,
-            AppColors.primaryButton,
-            () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const NewPostScreen()),
-              );
-            },
-          ),
-          _navItem(
-            Icons.person,
-            true,
-            AppColors.primaryButton,
-            () {
-              debugPrint('Already on Profile Screen');
-            },
-          ),
+          _navItem(Icons.home, false, AppColors.primaryButton, () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          }),
+          _navItem(Icons.add, false, AppColors.primaryButton, () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const NewPostScreen()),
+            );
+          }),
+          _navItem(Icons.person, true, AppColors.primaryButton, () {
+            debugPrint('Already on Profile Screen');
+          }),
         ],
       ),
     );
@@ -374,9 +356,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               : null,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: Colors.white, size: 30),
-            ],
+            children: [Icon(icon, color: Colors.white, size: 30)],
           ),
         ),
       ),
