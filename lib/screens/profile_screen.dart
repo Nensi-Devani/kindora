@@ -144,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Stack(
         children: [
           Container(
-            height: size.height * 0.35,
+            height: size.height,
             decoration: const BoxDecoration(
               color: AppColors.secondaryBackground,
             ),
@@ -298,7 +298,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
 
-      // ✅ Bottom Navigation Bar
       bottomNavigationBar: _buildBottomNavBar(context),
     );
   }
@@ -330,7 +329,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             );
           }),
           _navItem(Icons.person, true, AppColors.primaryButton, () {
-            debugPrint('Already on Profile Screen');
+            // debugPrint('Already on Profile Screen');
           }),
         ],
       ),
