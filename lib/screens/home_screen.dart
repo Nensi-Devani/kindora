@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kindora/app_theme/app_colors.dart';
 import 'payment_screen.dart';
 import 'new_post_screen.dart';
 import 'profile_screen.dart';
