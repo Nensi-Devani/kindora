@@ -5,6 +5,8 @@ import 'package:kindora/screens/my_donation_screen.dart';
 import 'package:kindora/screens/my_posts_screen.dart';
 import 'package:kindora/screens/received_donation_screen.dart';
 import 'package:kindora/screens/signin_screen.dart';
+import 'package:kindora/screens/home_screen.dart';
+import 'package:kindora/screens/new_post_screen.dart';
 import '../app_theme/app_colors.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,60 +17,55 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // Dummy profile data
   final String userName = 'Jhon Smith';
   final String userEmail = 'jhon.smith@gmail.com';
-
-  // --- LOGOUT VALIDATION/CONFIRMATION (The requested validation) ---
 
   Future<void> _showLogoutConfirmation() async {
     final bool confirm =
         await showDialog<bool>(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              backgroundColor: AppColors.lightBackground, // Match screen theme
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              title: const Text('Confirm Signout'),
-              content: const Text(
-                'Are you sure you want to sign out of your account?',
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text(
-                    'Cancel',
-                    style: TextStyle(color: AppColors.primaryButton),
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: AppColors.lightBackground,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text(
-                    'Sign Out',
-                    style: TextStyle(color: Colors.black),
+                  title: const Text('Confirm Signout'),
+                  content: const Text(
+                    'Are you sure you want to sign out of your account?',
                   ),
-                ),
-              ],
-            );
-          },
-        ) ??
-        false;
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(false),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(color: AppColors.primaryButton),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: const Text(
+                        'Sign Out',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ) ??
+            false;
 
     if (confirm) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => SignInScreen()),
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
         (Route<dynamic> route) => false,
       );
     } else {
-      print('Action: Log Out cancelled');
+      debugPrint('Action: Log Out cancelled');
     }
   }
-
-  // --- BUILD WIDGETS ---
 
   Widget _buildListTile({
     required IconData icon,
@@ -78,14 +75,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
       child: Material(
-        // ******************************************************
-        // FIX: Changed the background color from Colors.white to AppColors.lightBackground
-        // to match the surrounding card color and removed the elevation.
-        // ******************************************************
         color: AppColors.lightBackground,
         borderRadius: BorderRadius.circular(18),
-        elevation:
-            0, // Removed elevation to flatten the tile against the background
+        elevation: 0,
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(18),
@@ -94,7 +86,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               vertical: 16.0,
               horizontal: 20.0,
             ),
-            // The border matches the design's inner tile appearance
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black26),
               borderRadius: BorderRadius.circular(18),
@@ -149,23 +140,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      // Changed scaffold background to match the top header color for a smooth transition
       backgroundColor: AppColors.secondaryBackground,
       body: Stack(
         children: [
-          // 1. Top Curved Header Background (secondaryBackground)
           Container(
             height: size.height * 0.35,
             decoration: const BoxDecoration(
               color: AppColors.secondaryBackground,
             ),
           ),
-
-          // 2. Main Scrollable Content
           SingleChildScrollView(
             child: Column(
               children: [
-                // Custom AppBar / Back button
                 SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -173,22 +159,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       alignment: Alignment.topLeft,
                       child: IconButton(
                         icon: const Icon(Icons.arrow_back, color: Colors.black),
-                        onPressed: () => print('Back button pressed'),
+                        onPressed: () => debugPrint('Back button pressed'),
                       ),
                     ),
                   ),
                 ),
-
-                // Profile Header (Avatar, Name, Email, Buttons)
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
                   child: Column(
                     children: [
-                      // Profile Picture
                       CircleAvatar(
                         radius: 60,
                         backgroundColor: AppColors.primaryButton,
-                        // Placeholder image from the prompt
                         child: ClipOval(
                           child: Image.asset(
                             'assets/images/user.jpeg',
@@ -197,14 +179,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 120,
                             errorBuilder: (context, error, stackTrace) =>
                                 Image.network(
-                                  'https://placehold.co/120x120/E7AC98/B55266?text=Pets',
-                                  fit: BoxFit.cover,
-                                ),
+                              'https://placehold.co/120x120/E7AC98/B55266?text=Pets',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
-                      // Name and Email
                       Text(
                         userName,
                         style: const TextStyle(
@@ -221,7 +202,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      // Action Buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -253,8 +233,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-
-                // Main List Card Container (lightBackground)
                 Container(
                   width: size.width,
                   height: size.height,
@@ -269,7 +247,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.only(
                       top: 20.0,
                       bottom: 100.0,
-                    ), // Padding for the bottom nav bar
+                    ),
                     child: Column(
                       children: [
                         _buildListTile(
@@ -311,8 +289,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         _buildListTile(
                           icon: Icons.logout,
                           title: 'Sign Out',
-                          onTap:
-                              _showLogoutConfirmation, // Calls the confirmation dialog
+                          onTap: _showLogoutConfirmation,
                         ),
                       ],
                     ),
@@ -323,42 +300,84 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      // --- Bottom Navigation Bar (Fixed at the bottom) ---
-      bottomNavigationBar: Container(
-        height: 70,
-        decoration: const BoxDecoration(
-          color: AppColors.secondaryBackground,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10)],
+
+      // ✅ Bottom Navigation Bar
+      bottomNavigationBar: _buildBottomNavBar(context),
+    );
+  }
+
+  // --- Bottom Navigation Bar ---
+  Widget _buildBottomNavBar(BuildContext context) {
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+        color: AppColors.secondaryBackground,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.home_outlined, size: 30),
-              color: Colors.black54,
-              onPressed: () => print('Nav: Home'),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.primaryButton,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.add, size: 30),
-                color: Colors.white,
-                onPressed: () => print('Nav: Add Post'),
-              ),
-            ),
-            IconButton(
-              icon: const Icon(Icons.person, size: 30),
-              color: AppColors.primaryButton, // Highlight current tab
-              onPressed: () => print('Nav: Profile'),
-            ),
-          ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _navItem(
+            Icons.home,
+            false,
+            AppColors.primaryButton,
+            () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            },
+          ),
+          _navItem(
+            Icons.add,
+            false,
+            AppColors.primaryButton,
+            () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const NewPostScreen()),
+              );
+            },
+          ),
+          _navItem(
+            Icons.person,
+            true,
+            AppColors.primaryButton,
+            () {
+              debugPrint('Already on Profile Screen');
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _navItem(
+    IconData icon,
+    bool isSelected,
+    Color activeColor,
+    VoidCallback onPressed,
+  ) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+          decoration: isSelected
+              ? BoxDecoration(
+                  color: activeColor,
+                  borderRadius: BorderRadius.circular(15),
+                )
+              : null,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: Colors.white, size: 30),
+            ],
+          ),
         ),
       ),
     );
