@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      // home: SplashScreen(),
-      home: EditProfileScreen(),
+      home: SplashScreen(),
+      // home: EditProfileScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

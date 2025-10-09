@@ -136,13 +136,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           const Text(
                             'I agree to the processing of ',
-                            style: TextStyle(color: Colors.black45),
+                            style: TextStyle(color: Colors.black45, fontSize: 11),
                           ),
                           Text(
                             'Personal data',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColors.primaryButton,
+                              fontSize: 11
                             ),
                           ),
                         ],

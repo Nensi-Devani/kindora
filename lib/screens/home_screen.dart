@@ -249,25 +249,27 @@ class DonationFeedCard extends StatelessWidget {
       children: [
         const Text(
           "Amount Required: ",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
         ),
         Text(
           "50,000",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.primaryButton,
+            fontSize: 12
           ),
         ), // DF8B92
         const Spacer(),
         const Text(
           "Amount Received: ",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
         ),
         Text(
           "15,000",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.primaryButton,
+            fontSize: 12
           ),
         ), // DF8B92
       ],
@@ -316,16 +318,18 @@ class DonationFeedCard extends StatelessWidget {
           backgroundColor: AppColors.accentBackground, // ECCABF
         ),
         // 2. Comment Button
-        _feedButton(
-          icon: Icons.comment_outlined,
-          label: "Comment",
-          onPressed: () => debugPrint('Comment Clicked!'), // CLICK EVENT: Print
-          backgroundColor: AppColors.accentBackground, // ECCABF
+       _feedButton(
+            icon: Icons.comment_outlined,
+            label: "Comment",
+            onPressed: () => debugPrint('Comment Clicked!'),
+            backgroundColor: AppColors.accentBackground,
         ),
+
+
         // 3. Donate Button (Navigation)
         _feedButton(
           icon: Icons.favorite,
-          label: "Donate Now",
+          label: "Donate",
           onPressed: () {
             // CLICK EVENT: Navigate to Payment Screen
             Navigator.push(
