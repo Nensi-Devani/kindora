@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kindora/screens/edit_profile_screen.dart';
+import 'package:kindora/screens/home_screen.dart';
 import 'package:kindora/screens/splash_screen.dart';
 
 void main() {
@@ -16,7 +18,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: SplashScreen(),
+      // home: SplashScreen(),
+      home: EditProfileScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

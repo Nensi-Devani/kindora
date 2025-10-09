@@ -238,8 +238,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground, // E7AC98
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: Radius.circular(0),
+          topRight: Radius.circular(0),
         ),
       ),
       child: Row(
