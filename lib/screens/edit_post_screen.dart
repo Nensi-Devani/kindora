@@ -1,40 +1,10 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
+import 'package:image_picker/image_picker.dart'; // Package needed for gallery access
+import 'package:kindora/screens/home_screen.dart';
+import 'package:kindora/screens/new_post_screen.dart';
+import 'package:kindora/screens/profile_screen.dart';
+import 'dart:io'; // Needed for File class if you were to use Image.file
 import '../app_theme/app_colors.dart';
-
-// ====================================================================
-// 2. TARGET NAVIGATION SCREENS (PLACEHOLDERS)
-// ====================================================================
-
-class AddPostScreen extends StatelessWidget {
-  const AddPostScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('New Post')),
-      body: const Center(
-        child: Text('Add Post Screen', style: TextStyle(fontSize: 20)),
-      ),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Your Profile')),
-      body: const Center(
-        child: Text('Profile Screen', style: TextStyle(fontSize: 20)),
-      ),
-    );
-  }
-}
-
-// ====================================================================
-// 3. EDIT POST SCREEN (MAIN WIDGET)
-// ====================================================================
 
 class EditPostScreen extends StatefulWidget {
   const EditPostScreen({super.key});
@@ -53,11 +23,14 @@ class _EditPostScreenState extends State<EditPostScreen> {
     text: "50,000",
   );
 
-  // Simplified image list for demonstration of deletion
+  // List to hold image paths. Starts with simulated assets.
   List<String> _images = [
     'assets/images/child1.jpg',
     'assets/images/child2.jpeg',
   ];
+
+  // Initialize ImagePicker
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void dispose() {
@@ -73,25 +46,30 @@ class _EditPostScreenState extends State<EditPostScreen> {
     });
   }
 
-  void _addPhoto() {
-    // In a real app, this would use an image picker package (image_picker)
-    debugPrint('*** Photo Gallery/Camera opened to add new photo! ***');
-    // Simulate adding a new placeholder image
-    setState(() {
-      _images.add('assets/placeholder.png');
-    });
+  // 👇 UPDATED: Function to open the mobile gallery and add a photo
+  Future<void> _addPhoto() async {
+    // This line opens the mobile gallery/photo picker
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      debugPrint('*** Photo selected from gallery: ${image.path} ***');
+      setState(() {
+        // Add the actual file path. This path will be used by the Image widget.
+        _images.add(image.path);
+      });
+    } else {
+      debugPrint('*** Photo selection cancelled. ***');
+    }
   }
 
   void _handlePost() {
-    // In a real app, this would save the updated data to a backend
+    debugPrint('*** Post button clicked! Saving changes: ***');
     debugPrint('Description: ${_descriptionController.text}');
     debugPrint('Amount: ${_amountController.text}');
     debugPrint('Images remaining: ${_images.length}');
 
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (_) => const HomeScreen()),
-      (route) => false,
-    );
+    // Optionally navigate back after posting
+    Navigator.pop(context);
   }
 
   @override
@@ -199,27 +177,78 @@ class _EditPostScreenState extends State<EditPostScreen> {
     required int index,
     required VoidCallback onDelete,
   }) {
+    Widget imageWidget;
+
+    // Check if the path is an asset path (starts with 'assets/')
+    if (imagePath.startsWith('assets/')) {
+      imageWidget = Image.asset(
+        imagePath,
+        fit: BoxFit.cover,
+        width: 150,
+        height: 150,
+        // Fallback for non-existent assets
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            width: 150,
+            height: 150,
+            color: Colors.grey.shade300,
+            child: Center(
+              child: Text("Asset $index", textAlign: TextAlign.center),
+            ),
+          );
+        },
+      );
+    } else {
+      // If it's not an asset, assume it's a file path from image_picker
+      // NOTE: Using Image.file(File(imagePath)) is the correct way,
+      // but requires 'dart:io'. We use a placeholder here for general safety
+      // in environments that might not handle File I/O easily, but the principle is sound.
+      try {
+        imageWidget = Image.file(
+          File(imagePath),
+          fit: BoxFit.cover,
+          width: 150,
+          height: 150,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              width: 150,
+              height: 150,
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: Text(
+                  "File\n$index\nLoaded",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      } catch (e) {
+        // Fallback if File() fails for any reason
+        imageWidget = Container(
+          width: 150,
+          height: 150,
+          color: Colors.black.withOpacity(0.5),
+          child: Center(
+            child: Text(
+              "File\n$index\nPath: $imagePath",
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white, fontSize: 12),
+            ),
+          ),
+        );
+      }
+    }
+
     return Stack(
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
-          child: Image.asset(
-            imagePath, // Placeholder asset
-            fit: BoxFit.cover,
-            width: 150,
-            height: 150,
-            // Simple error handling for non-existent assets
-            errorBuilder: (context, error, stackTrace) {
-              return Container(
-                width: 150,
-                height: 150,
-                color: Colors.grey.shade300,
-                child: Center(
-                  child: Text("Image $index", textAlign: TextAlign.center),
-                ),
-              );
-            },
-          ),
+          child: imageWidget,
         ),
         Positioned(
           top: -5,
@@ -249,7 +278,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
     return SizedBox(
       width: double.infinity,
       child: TextButton.icon(
-        onPressed: _addPhoto, // CLICK EVENT: Add photo (simulates gallery open)
+        onPressed: _addPhoto, // 👈 Calls the ImagePicker function
         icon: const Icon(
           Icons.camera_alt_outlined,
           size: 30,
@@ -321,26 +350,24 @@ class _EditPostScreenState extends State<EditPostScreen> {
   }
 
   Widget _buildPostButton() {
-    return Center(
-      child: SizedBox(
-        width: 250,
-        height: 60,
-        child: ElevatedButton(
-          onPressed: _handlePost, // CLICK EVENT: Post the updates
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primaryButton, // B55266
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            ),
-            elevation: 5,
+    return SizedBox(
+      width: double.infinity,
+      height: 60,
+      child: ElevatedButton(
+        onPressed: _handlePost, // CLICK EVENT: Post the updates
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryButton, // B55266
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
           ),
-          child: const Text(
-            "Save",
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+          elevation: 5,
+        ),
+        child: const Text(
+          "Post",
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -355,8 +382,8 @@ class _EditPostScreenState extends State<EditPostScreen> {
       decoration: BoxDecoration(
         color: AppColors.secondaryBackground, // E7AC98
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(0),
-          topRight: Radius.circular(0),
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
       ),
       child: Row(
@@ -372,14 +399,19 @@ class _EditPostScreenState extends State<EditPostScreen> {
           }),
 
           // 2. Add Button (Selected State in the image)
-          _navItem(Icons.add, false, AppColors.primaryButton, () {
-            // CLICK EVENT: Go to Add Post Screen
-            Navigator.pushReplacement(
-              // Use pushReplacement to clear the stack if needed
-              context,
-              MaterialPageRoute(builder: (context) => const AddPostScreen()),
-            );
-          }),
+          _navItem(
+            Icons.add,
+            true, // Add is selected/active on this screen
+            AppColors.primaryButton,
+            () {
+              // CLICK EVENT: Go to Add Post Screen
+              Navigator.pushReplacement(
+                // Use pushReplacement to clear the stack if needed
+                context,
+                MaterialPageRoute(builder: (context) => const NewPostScreen()),
+              );
+            },
+          ),
 
           // 3. Profile Button (Navigation)
           _navItem(Icons.person, false, AppColors.primaryButton, () {
@@ -418,6 +450,25 @@ class _EditPostScreenState extends State<EditPostScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+// 4. MAIN APP ENTRY POINT (for testing)
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Edit Post Demo',
+      theme: ThemeData(primarySwatch: Colors.red, fontFamily: 'Roboto'),
+      home: const EditPostScreen(),
     );
   }
 }
