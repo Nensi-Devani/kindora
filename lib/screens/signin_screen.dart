@@ -48,11 +48,20 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                       const SizedBox(height: 40.0),
+                      // Email TextFormField with updated validation
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
                           }
+                          // --- START: Email Format Validation ---
+                          final bool emailValid = RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(value);
+                          if (!emailValid) {
+                            return 'Please enter a valid email address';
+                          }
+                          // --- END: Email Format Validation ---
                           return null;
                         },
                         decoration: InputDecoration(
@@ -150,8 +159,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   content: Text('Successfully logged in...'),
                                 ),
                               );
-
-                              // Navigate to SignUpScreen after successful validation
+                              
                               Future.delayed(const Duration(seconds: 1), () {
                                 Navigator.push(
                                   context,

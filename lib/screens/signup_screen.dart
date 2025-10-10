@@ -15,6 +15,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formSignupKey = GlobalKey<FormState>();
   bool agreePersonalData = true;
 
+  // Regular expression for email validation
+  final RegExp _emailRegExp = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+  // Regular expression for name (letters and spaces only)
+  final RegExp _nameRegExp = RegExp(r"^[a-zA-Z\s]+$");
+
+  // Regular expressions for password complexity
+  final RegExp _numberRegExp = RegExp(r'[0-9]');
+  // Common set of special characters used for simplicity
+  final RegExp _specialCharRegExp = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -48,11 +60,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 40.0),
 
-                      // Full Name
+                      // Full Name TextFormField with new validation
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Full name';
+                          }
+                          if (!_nameRegExp.hasMatch(value)) {
+                            return 'Full name must contain characters only';
                           }
                           return null;
                         },
@@ -72,11 +87,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 25.0),
 
-                      // Email
+                      // Email TextFormField with new validation
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
+                          }
+                          if (!_emailRegExp.hasMatch(value)) {
+                            return 'Please enter a valid email address';
                           }
                           return null;
                         },
@@ -96,13 +114,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 25.0),
 
-                      // Password
+                      // Password TextFormField with new validation
                       TextFormField(
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Password';
+                          }
+                          if (value.length < 8) {
+                            return 'Password must be at least 8 characters long';
+                          }
+                          if (!_numberRegExp.hasMatch(value)) {
+                            return 'Password must contain at least 1 number';
+                          }
+                          if (!_specialCharRegExp.hasMatch(value)) {
+                            return 'Password must contain at least 1 special character';
                           }
                           return null;
                         },
@@ -136,15 +163,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           const Text(
                             'I agree to the processing of ',
-                            style: TextStyle(color: Colors.black45, fontSize: 11),
+                            style:
+                                TextStyle(color: Colors.black45, fontSize: 11),
                           ),
                           Text(
                             'Personal data',
                             style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primaryButton,
-                              fontSize: 11
-                            ),
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primaryButton,
+                                fontSize: 11),
                           ),
                         ],
                       ),
@@ -214,7 +241,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // Social Icons Placeholder
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                        children: const [
                           // Social media icons go here
                         ],
                       ),
