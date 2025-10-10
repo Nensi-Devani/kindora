@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:kindora/app_theme/app_colors.dart';
 import 'package:kindora/screens/payment_done_screen.dart';
 import 'home_screen.dart';
-import 'new_post_screen.dart';
 import 'profile_screen.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -50,22 +49,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void _updateSummary() => setState(() {});
 
+  // ✅ Fixed Confirm Payment Navigation Logic
   void _confirmPayment() {
     if (_formKey.currentState!.validate()) {
+      // Close keyboard
+      FocusScope.of(context).unfocus();
+
+      // Show temporary processing message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             'Processing payment of Rs. ${_total.toStringAsFixed(2)}...',
           ),
+          duration: const Duration(seconds: 1),
         ),
       );
-      print('Payment confirmed for Rs. $_total');
 
+      // Navigate safely after short delay
       Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const PaymentDoneScreen()),
-        );
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const PaymentDoneScreen()),
+          );
+        }
       });
     }
   }
@@ -352,7 +358,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return Container(
       height: 80,
       decoration: BoxDecoration(
-        color: AppColors.secondaryBackground, // E7AC98
+        color: AppColors.secondaryBackground,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(0),
           topRight: Radius.circular(0),
@@ -361,43 +367,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          // 1. Home Button (Navigation)
-          _navItem(
-            Icons.home,
-            false, // Not selected
-            AppColors.primaryButton,
-            () {
-              // CLICK EVENT: Go to Home Screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-              );
-            },
-          ),
-
-          // 2. Add Button (Selected State)
-          _navItem(
-            Icons.add,
-            false, // Add is selected/active on this screen
-            AppColors.primaryButton,
-            () {
-              debugPrint('Already on New Post Screen');
-            },
-          ),
-
-          // 3. Profile Button (Navigation)
-          _navItem(
-            Icons.person,
-            false, // Not selected
-            AppColors.primaryButton,
-            () {
-              // CLICK EVENT: Go to Profile Screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
-              );
-            },
-          ),
+          _navItem(Icons.home, false, AppColors.primaryButton, () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          }),
+          _navItem(Icons.add, false, AppColors.primaryButton, () {
+            debugPrint('Already on Payment Screen');
+          }),
+          _navItem(Icons.person, false, AppColors.primaryButton, () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()),
+            );
+          }),
         ],
       ),
     );
@@ -411,12 +395,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
   ) {
     return Expanded(
       child: GestureDetector(
-        onTap: onPressed, // The click event handler
+        onTap: onPressed,
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
           decoration: isSelected
               ? BoxDecoration(
-                  color: activeColor, // B55266
+                  color: activeColor,
                   borderRadius: BorderRadius.circular(15),
                 )
               : null,
@@ -448,8 +432,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   String? _validateExpiry(String? value) {
     if (value == null || value.isEmpty) return 'Expiry date is required';
-    if (!RegExp(r'^\d{2}/\d{2}$').hasMatch(value))
+    if (!RegExp(r'^\d{2}/\d{2}$').hasMatch(value)) {
       return 'Invalid expiry format (MM/YY)';
+    }
     return null;
   }
 
@@ -492,12 +477,27 @@ class _ExpiryDateInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     var text = newValue.text;
-    if (text.length == 2 && oldValue.text.length == 1) {
-      text = '$text/';
+
+    // Filter non-digits
+    final digitsOnly = text.replaceAll(RegExp(r'[^\d]'), '');
+
+    // Max length is 4 digits (MMYY)
+    if (digitsOnly.length > 4) {
+      return oldValue;
     }
+
+    String formattedText = '';
+    for (int i = 0; i < digitsOnly.length; i++) {
+      // Add a slash after the second digit
+      if (i == 2) {
+        formattedText += '/';
+      }
+      formattedText += digitsOnly[i];
+    }
+
     return TextEditingValue(
-      text: text,
-      selection: TextSelection.collapsed(offset: text.length),
+      text: formattedText,
+      selection: TextSelection.collapsed(offset: formattedText.length),
     );
   }
 }
