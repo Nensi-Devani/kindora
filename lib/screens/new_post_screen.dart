@@ -1,6 +1,8 @@
+import 'dart:io'; // Required for using File
 import 'home_screen.dart';
 import 'profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart'; // <--- NEW IMPORT
 import '../app_theme/app_colors.dart';
 
 class NewPostScreen extends StatefulWidget {
@@ -17,8 +19,9 @@ class _NewPostScreenState extends State<NewPostScreen> {
     text: "0.00",
   );
 
-  // List to hold image paths (simulated)
-  List<String> _images = [];
+  // List to hold selected images (using XFile from image_picker)
+  List<XFile> _images = []; // <--- UPDATED TYPE
+  final ImagePicker _picker = ImagePicker(); // <--- NEW ImagePicker INSTANCE
 
   @override
   void dispose() {
@@ -27,23 +30,29 @@ class _NewPostScreenState extends State<NewPostScreen> {
     super.dispose();
   }
 
-  void _addPhoto() {
-    // 🚀 CLICK EVENT: Simulates opening the gallery/computer file explorer
-    debugPrint('*** Photo Gallery/Camera opened to add new photo! ***');
-    // In a real app, you would use a package like 'image_picker' here.
+  // UPDATED: Function to open the gallery and pick a photo
+  void _addPhoto() async {
+    // Pick an image from the gallery
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-    // Simulate adding a new placeholder image for demonstration
-    // If you need to see the image appear, you'd add state logic here.
-    // For this minimal screen, we just log the event.
+    if (image != null) {
+      // If an image was selected, update the state
+      setState(() {
+        _images.add(image);
+        debugPrint('Image selected: ${image.path}');
+        debugPrint('Total images now: ${_images.length}');
+      });
+    } else {
+      debugPrint('Photo selection cancelled.');
+    }
   }
 
   void _handlePost() {
     // 🚀 CLICK EVENT: Post the new data
-    // In a real app, this sends data to your backend/database
     debugPrint('*** Post button clicked! New post data: ***');
     debugPrint('Description: ${_descriptionController.text}');
     debugPrint('Amount: ${_amountController.text}');
-    debugPrint('Images uploaded: ${_images.length}');
+    debugPrint('Images uploaded: ${_images.length}'); // Will report actual count
 
     // Optionally navigate back to the home screen after posting
     Navigator.pushReplacement(
@@ -87,6 +96,12 @@ class _NewPostScreenState extends State<NewPostScreen> {
             // 2. Add Photo Button
             _buildAddPhotoButton(),
 
+            // 2.1 Display selected images (Optional but helpful visual feedback)
+            if (_images.isNotEmpty) ...[
+              const SizedBox(height: 15),
+              _buildImagePreview(),
+            ],
+
             const SizedBox(height: 25),
 
             // 3. Enter Required Amount Field
@@ -121,7 +136,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
         maxLines: 5,
         decoration: const InputDecoration(
           border: InputBorder.none,
-          hintText: "Enter description", // Matches the image
+          hintText: "Enter description",
         ),
         style: const TextStyle(fontSize: 16),
       ),
@@ -132,8 +147,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
     return SizedBox(
       width: double.infinity,
       child: TextButton.icon(
-        onPressed:
-            _addPhoto, // 🚀 CLICK EVENT: Add photo (simulates gallery open)
+        onPressed: _addPhoto, // <--- CALLS THE UPDATED FUNCTION
         icon: const Icon(
           Icons.camera_alt_outlined,
           size: 30,
@@ -154,6 +168,55 @@ class _NewPostScreenState extends State<NewPostScreen> {
             borderRadius: BorderRadius.circular(15),
           ),
         ),
+      ),
+    );
+  }
+
+  // NEW: Widget to display a horizontal list of selected images
+  Widget _buildImagePreview() {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: _images.length,
+        itemBuilder: (context, index) {
+          final imageFile = File(_images[index].path);
+          return Stack(
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                margin: EdgeInsets.only(right: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    image: FileImage(imageFile),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              // Optional: Add a close button to remove the image
+              Positioned(
+                right: 0,
+                top: 0,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _images.removeAt(index);
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.close, color: Colors.white, size: 18),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -206,9 +269,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
   Widget _buildPostButton() {
     return SizedBox(
-      // width: double.infinity,
       width: 250,
-      // height: 60,
       child: ElevatedButton(
         onPressed: _handlePost, // 🚀 CLICK EVENT: Post the new content
         style: ElevatedButton.styleFrom(
